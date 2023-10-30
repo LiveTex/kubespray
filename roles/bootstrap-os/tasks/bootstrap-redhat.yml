@@ -71,46 +71,46 @@
     - rh_subscription_status.changed
 
 # container-selinux is in extras repo
-- name: Enable RHEL 7 repos
-  rhsm_repository:
-    name:
-      - "rhel-7-server-rpms"
-      - "rhel-7-server-extras-rpms"
-    state: enabled
-  when:
-    - rhel_enable_repos | default(True) | bool
-    - ansible_distribution_major_version == "7"
+# - name: Enable RHEL 7 repos
+#   rhsm_repository:
+#     name:
+#       - "rhel-7-server-rpms"
+#       - "rhel-7-server-extras-rpms"
+#     state: enabled
+#   when:
+#     - rhel_enable_repos | default(True) | bool
+#     - ansible_distribution_major_version == "7"
 
-# container-selinux is in appstream repo
-- name: Enable RHEL 8 repos
-  rhsm_repository:
-    name:
-      - "rhel-8-for-*-baseos-rpms"
-      - "rhel-8-for-*-appstream-rpms"
-    state: enabled
-  when:
-    - rhel_enable_repos | default(True) | bool
-    - ansible_distribution_major_version == "8"
+# # container-selinux is in appstream repo
+# - name: Enable RHEL 8 repos
+#   rhsm_repository:
+#     name:
+#       - "rhel-8-for-*-baseos-rpms"
+#       - "rhel-8-for-*-appstream-rpms"
+#     state: enabled
+#   when:
+#     - rhel_enable_repos | default(True) | bool
+#     - ansible_distribution_major_version == "8"
 
-- name: Check presence of fastestmirror.conf
-  stat:
-    path: /etc/yum/pluginconf.d/fastestmirror.conf
-    get_attributes: no
-    get_checksum: no
-    get_mime: no
-  register: fastestmirror
+# - name: Check presence of fastestmirror.conf
+#   stat:
+#     path: /etc/yum/pluginconf.d/fastestmirror.conf
+#     get_attributes: no
+#     get_checksum: no
+#     get_mime: no
+#   register: fastestmirror
 
 # the fastestmirror plugin can actually slow down Ansible deployments
-- name: Disable fastestmirror plugin if requested
-  lineinfile:
-    dest: /etc/yum/pluginconf.d/fastestmirror.conf
-    regexp: "^enabled=.*"
-    line: "enabled=0"
-    state: present
-  become: true
-  when:
-    - fastestmirror.stat.exists
-    - not centos_fastestmirror_enabled
+# - name: Disable fastestmirror plugin if requested
+#   lineinfile:
+#     dest: /etc/yum/pluginconf.d/fastestmirror.conf
+#     regexp: "^enabled=.*"
+#     line: "enabled=0"
+#     state: present
+#   become: true
+#   when:
+#     - fastestmirror.stat.exists
+#     - not centos_fastestmirror_enabled
 
 # libselinux-python is required on SELinux enabled hosts
 # See https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#managed-node-requirements
