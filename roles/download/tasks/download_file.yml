@@ -120,7 +120,7 @@
       use_ssh_args: true
       mode: push
       ssh_connection_multiplexing: true
-      # rsync_path: stty raw -echo; sudo /usr/bin/rsync
+      rsync_path: sudo -S rsync
       # set_remote_user: no # https://github.com/ansible/ansible/issues/15297#issuecomment-749248005
     register: get_task
     # become: true
