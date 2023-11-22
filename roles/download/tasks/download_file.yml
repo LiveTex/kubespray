@@ -120,6 +120,7 @@
       use_ssh_args: true
       mode: push
     register: get_task
+    become: true
     until: get_task is succeeded
     delay: "{{ retry_stagger | random + 3 }}"
     retries: 4
